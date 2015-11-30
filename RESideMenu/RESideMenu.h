@@ -88,6 +88,7 @@
 
 @optional
 - (void)sideMenu:(RESideMenu *)sideMenu didRecognizePanGesture:(UIPanGestureRecognizer *)recognizer;
+- (BOOL)sideMenu:(RESideMenu *)sideMenu shouldShowMenuViewController:(UIViewController *)menuViewController;
 - (void)sideMenu:(RESideMenu *)sideMenu willShowMenuViewController:(UIViewController *)menuViewController;
 - (void)sideMenu:(RESideMenu *)sideMenu didShowMenuViewController:(UIViewController *)menuViewController;
 - (void)sideMenu:(RESideMenu *)sideMenu willHideMenuViewController:(UIViewController *)menuViewController;

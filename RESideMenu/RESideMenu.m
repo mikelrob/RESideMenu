@@ -133,14 +133,30 @@
 
 - (void)presentLeftMenuViewController
 {
-    [self presentMenuViewContainerWithMenuViewController:self.leftMenuViewController];
-    [self showLeftMenuViewController];
+    BOOL shouldShowMenuViewController = YES;
+    
+    if ([self.delegate conformsToProtocol:@protocol(RESideMenuDelegate)] && [self.delegate respondsToSelector:@selector(sideMenu:shouldShowMenuViewController:)]) {
+        shouldShowMenuViewController = [self.delegate sideMenu:self shouldShowMenuViewController:self.leftMenuViewController];
+    }
+    
+    if (shouldShowMenuViewController) {
+        [self presentMenuViewContainerWithMenuViewController:self.leftMenuViewController];
+        [self showLeftMenuViewController];
+    }
 }
 
 - (void)presentRightMenuViewController
 {
-    [self presentMenuViewContainerWithMenuViewController:self.rightMenuViewController];
-    [self showRightMenuViewController];
+    BOOL shouldShowMenuViewController = YES;
+    
+    if ([self.delegate conformsToProtocol:@protocol(RESideMenuDelegate)] && [self.delegate respondsToSelector:@selector(sideMenu:shouldShowMenuViewController:)]) {
+        shouldShowMenuViewController = [self.delegate sideMenu:self shouldShowMenuViewController:self.leftMenuViewController];
+    }
+
+    if (shouldShowMenuViewController) {
+        [self presentMenuViewContainerWithMenuViewController:self.rightMenuViewController];
+        [self showRightMenuViewController];
+    }
 }
 
 - (void)hideMenuViewController
@@ -554,6 +570,14 @@
 {
     if ([self.delegate conformsToProtocol:@protocol(RESideMenuDelegate)] && [self.delegate respondsToSelector:@selector(sideMenu:didRecognizePanGesture:)])
         [self.delegate sideMenu:self didRecognizePanGesture:recognizer];
+    
+    if ([self.delegate conformsToProtocol:@protocol(RESideMenuDelegate)] && [self.delegate respondsToSelector:@selector(sideMenu:shouldShowMenuViewController:)]) {
+    
+        if(![self.delegate sideMenu:self shouldShowMenuViewController:self.leftMenuViewController]){
+            return;
+        }
+        
+    }
     
     if (!self.panGestureEnabled) {
         return;
